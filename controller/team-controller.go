@@ -1,5 +1,6 @@
 package controller
 
+/*
 import(
 	"fmt"
 	"net/http"
@@ -13,21 +14,20 @@ import(
 type controller struct{}
 
 var (
-	leagueService service.LeagueService
+	teamService service.LeagueService = service.NewTeamService()
 )
 
-type LeagueController interface{
-	GetLeagues(writer http.ResponseWriter, request *http.Request)
-	AddLeague(writer http.ResponseWriter, request *http.Request)
-	HomePage(writer http.ResponseWriter, request *http.Request)
+type TeamController interface{
+	GetTeams(writer http.ResponseWriter, request *http.Request)
+	AddTeam(writer http.ResponseWriter, request *http.Request)
+	
 }
 
-func NewLeagueController(service service.LeagueService) LeagueController{
-	leagueService = service
+func NewTeamController() TeamController{
 	return &controller{}
 }
 
-func (*controller) GetLeagues(writer http.ResponseWriter, request *http.Request){
+func (*controller) GetTeams(writer http.ResponseWriter, request *http.Request){
 
 	writer.Header().Set("Content-Type", "application/json")
 	leagues, err := leagueService.GetAll()
@@ -43,7 +43,7 @@ func (*controller) GetLeagues(writer http.ResponseWriter, request *http.Request)
 }
 
 
-func (*controller) AddLeague(writer http.ResponseWriter, request *http.Request){
+func (*controller) AddTeam(writer http.ResponseWriter, request *http.Request){
 	writer.Header().Set("Content-Type", "application/json")
 	var league entity.League
 	err := json.NewDecoder(request.Body).Decode(&league)
@@ -71,9 +71,4 @@ func (*controller) AddLeague(writer http.ResponseWriter, request *http.Request){
 	writer.WriteHeader(http.StatusOK)
 
 	json.NewEncoder(writer).Encode(result)
-}
-
-
-func (*controller) HomePage(writer http.ResponseWriter, request *http.Request){
-	fmt.Fprint(writer, "Homepage Endpoint Hit")
-}
+}*/

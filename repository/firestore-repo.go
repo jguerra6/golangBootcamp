@@ -20,7 +20,7 @@ func NewFirestoreRepository() LeagueRepository{
 func createClient(ctx context.Context) *firestore.Client {
 	client, err := firestore.NewClient(ctx, projectId)
 	if err != nil {
-			log.Fatalf("Failed to create client: %v", err)
+			log.Fatalf("Failed to create Firestore Client: %v", err)
 	}
 	// Close client when done with
 	// defer client.Close()
@@ -34,15 +34,12 @@ const (
 
 func (*repo) Save(league *entity.League) (*entity.League, error){
 	ctx := context.Background()
-	client, err := firestore.NewClient(ctx, projectId)
-	if(err != nil){
-		log.Fatal("Failed to create a Firestore Client: ", err)
-		return nil, err
-	}
+	
+	client := createClient(ctx)
 
-	defer client.Close()
+	
 
-	_, _, err = client.Collection(collectionName).Add(ctx, map[string]interface{}{
+	_, _, err := client.Collection(collectionName).Add(ctx, map[string]interface{}{
 		"country": league.Country,
 		"name": league.Name,
 		"current_season_id": league.Current_season_id,
@@ -53,19 +50,15 @@ func (*repo) Save(league *entity.League) (*entity.League, error){
 		return nil, err
 	}
 
+	defer client.Close()
 	return league, nil
 }
 
 func (*repo) GetAll() ([]entity.League, error){
 	ctx := context.Background()
-	/*
-	client, err := firestore.NewClient(ctx, projectId)
-	if(err != nil){
-		log.Fatal("Failed to create a Firestore Client: ", err)
-		return nil, err
-	}*/
+	
 	client := createClient(ctx)
-	defer client.Close()
+	
 	var leagues []entity.League
 	iter := client.Collection(collectionName).Documents(ctx)
 	//log.Println(*iterator);
@@ -88,6 +81,8 @@ func (*repo) GetAll() ([]entity.League, error){
 
 		leagues = append(leagues, league)
 	}
+	
+	defer client.Close()
 	return leagues, nil
 
 }

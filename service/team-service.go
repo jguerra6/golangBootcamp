@@ -1,5 +1,5 @@
 package service
-
+/*
 import(
 	"errors"
 	"simpleAPI/entity"
@@ -7,7 +7,7 @@ import(
 )
 
 var (
-	repo repository.LeagueRepository
+	repo = repository.NewFirestoreRepository()
 	//This can be changed to use any type of DB
 )
 
@@ -19,8 +19,7 @@ type LeagueService interface{
 
 type service struct{}
 
-func NewLeagueService(repo1 repository.LeagueRepository) LeagueService {
-	repo = repo1
+func NewLeagueService() LeagueService {
 	return &service{}
 }
 
@@ -43,3 +42,4 @@ func (*service) Create(league *entity.League) (*entity.League, error){
 func (*service) GetAll() ([]entity.League, error){
 	return repo.GetAll()
 }
+*/
